@@ -55,7 +55,7 @@ console.log("hello log");
 
 function compute() {
  const dateNow = new Date ();
- const dateThen = new Date(<?php echo"$Year"?>,<?php echo"$Month"-1?>,<?php echo"$Day"?>);
+ const dateThen = new Date(<?php echo $_GET["Year"]; ?>,<?php echo $_GET["Month"]; ?> -1,<?php echo $_GET["Day"]; ?>;
  const dateDiff = dateThen - dateNow;
  const dateCount = Math.floor(dateDiff/1000/60/60/24);
  const hourOffset = Math.floor(dateDiff/1000/60/60);
