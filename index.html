@@ -64,9 +64,9 @@ let formDay = 1;
 let formMonth = 1;
 let formYear = 2021;
 function formChanged(){
-  let formDay = document.getElementById("Day");
-let formMonth = document.getElementById("Month");
-let formYear = document.getElementById("Year");
+  let formDay = document.getElementsByName("Day")[0].value;
+let formMonth = document.getElementsByName("Month")[0].value;
+let formYear = document.getElementsByName("Year")[0].value;
 }
 function compute() {
  const dateNow = new Date ();
