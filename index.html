@@ -67,7 +67,8 @@ function formChanged(){
   let formDay = document.getElementsByName("Day")[0].value;
 let formMonth = document.getElementsByName("Month")[0].value;
 let formYear = document.getElementsByName("Year")[0].value;
-}
+  console.log("form submitted");
+};
 function compute() {
  const dateNow = new Date ();
  const dateThen = new Date(formYear,formMonth-1,formDay);
