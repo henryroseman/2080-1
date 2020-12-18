@@ -60,9 +60,9 @@ body {
       <script id="rendered-js" >
 console.clear();
 console.log("hello log");
-let formDay = 1;
-let formMonth = 1;
-let formYear = 2021;
+const formDay = 1;
+const formMonth = 1;
+const formYear = 2021;
 function formChanged(){
  formDay = document.getElementsByName("Day")[0].value;
 formMonth = document.getElementsByName("Month")[0].value;
@@ -70,9 +70,9 @@ formMonth = document.getElementsByName("Month")[0].value;
   console.log("form submitted");
 };
 function compute() {
-  console.log(formYear);
-  console.log(formMonth);
-  console.log(formYear);
+ console.log(formYear);
+ console.log(formMonth);
+ console.log(formYear);
  const dateNow = new Date ();
  const dateThen = new Date(formYear,formMonth-1,formDay);
  const dateDiff = dateThen - dateNow;
