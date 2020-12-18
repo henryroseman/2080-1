@@ -82,7 +82,7 @@ function compute() {
  const hourOffset = Math.floor(dateDiff/1000/60/60);
   const hours = hourOffset - dateCount*24;
   const minutes = new Date(dateDiff).getMinutes();
-  let dateString = "Time to " + formMonth + "/" + formDay + "/" + formYear + " ";
+  let dateString = "Time to " + formMonth + "/" + formDay + "/" + formYear + ": ";
   dateString = dateString + dateCount + " Days, " + hours + " Hours, " + minutes + " minutes"
 document.getElementById("timeRemaining").innerHTML=dateString;
 
