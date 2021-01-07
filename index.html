@@ -43,38 +43,41 @@ body {
 
 </head>
 
-<body translate="no" >
-  <div id="container">
- 
-</div>
-<br>
-<button id="pickStudent">Random Student</button>
-<button id="Reset" onclick="resetClick()">Reset</button>
-<div>
+<body translate="no" >	<body translate="no" >
+  <h1>Count Down Timer</h1>	  <div id="container">
+<div id="message">...</div>	
+<div id="timeRemaining">...</div>	</div>
 
- <span id="picked">...</span>
-  <br> <br>
+<br>
+<h2>Enter Your Date</h2>	<button id="pickStudent">Random Student</button>
+<form>	<button id="Reset" onclick="resetClick()">Reset</button>
+ Day: <input type="number" name="Day"> <br> <br>	<div>
+ Month: <input type="number" name="Month"> <br><br>	
+ Year: <input type="number" name="Year"> <br> <br>	 <span id="picked">...</span>
+ <input type="button" value = "Submit" onclick=formChanged()>	  <br> <br>
    <h3>Add Student</h3>
   <form>
  First Name: <input type="text" id="First"> <br> <br>
  Last Name: <input type="text" id="Last"> <br><br>
  Grade Level: <input type="number" id="GradeLevel"> <br> <br>
  <input type="button" value="Submit" onclick="formChanged()">
-</form>
+</form>	</form>
 </div>
-  
-  
-      <script id="rendered-js" >
-console.clear();
-let student = 0;
-const students = [];
 
-function makeStudent(username,first,last,gradelevel){
-  const student = {};
-  student.username = username;
-  student.first = first;
-  student.last = last;
-  student.gradelevel = gradelevel;
+
+
+
+      <script id="rendered-js" >	      <script id="rendered-js" >
+console.clear();	console.clear();
+console.log("hello log");	let student = 0;
+var formDay = 1;	const students = [];
+var formMonth = 1;	
+var formYear = 2021;	function makeStudent(username,first,last,gradelevel){
+function formChanged(){	  const student = {};
+ formDay = document.getElementsByName("Day")[0].value;	  student.username = username;
+formMonth = document.getElementsByName("Month")[0].value;	  student.first = first;
+ formYear = document.getElementsByName("Year")[0].value;	  student.last = last;
+  console.log("form submitted");	  student.gradelevel = gradelevel;
   student.clickcount = 0;
   student.lasttime = Date.now();
   return student;
@@ -98,32 +101,53 @@ function pickStudent(){
   } else {
     pickStudent();
   }
-};
+};	};
+function compute() {	
+ //don't forget to disable eventually!	
+
+  console.log(formYear);	
+ console.log(formMonth);	
+ console.log(formYear);	
+ const dateNow = new Date ();	
+ const dateThen = new Date(formYear,formMonth-1,formDay);	
+ const dateDiff = dateThen - dateNow;	
+ const dateCount = Math.floor(dateDiff/1000/60/60/24);	
+ const hourOffset = Math.floor(dateDiff/1000/60/60);	
+  const hours = hourOffset - dateCount*24;	
+  const minutes = new Date(dateDiff).getMinutes();	
+  let dateString = "Time to " + formMonth + "/" + formDay + "/" + formYear + ": ";	
+  dateString = dateString + dateCount + " Days, " + hours + " Hours, " + minutes + " minutes"	
+document.getElementById("timeRemaining").innerHTML=dateString;	
+
 
 pickStudent();
 
+
 let element = document.getElementById("pickStudent");
+
 
 element.addEventListener("click",pickStudent);
 
-function renderList(){
-  console.log("renderList");
-  students.sort(function(a,b){return a.clickcount-b.clickcount});
+
+if(dateDiff < 0){	function renderList(){
+  document.getElementById("message").innerHTML="Time's up";	  console.log("renderList");
+  clearInterval(theTimer);	  students.sort(function(a,b){return a.clickcount-b.clickcount});
   let content = "";
-  
+
+
   for (let i = 0; i < students.length; i++) {
     content += `<div class="student" id="${students[i].username}"> ${students[i].first} ${students[i].last} ${students[i].clickcount}</div>\n`;
 
   }
-  
-  
+
+
   let element = document.getElementById("container");
   element.innerHTML = content;
 }
 
 function listClick(e){
   console.log(e)
-  
+
   for(let i=0; i<students.length; i++){
     if(students[i].username == e.target.id){
       students[i].clickcount++;
@@ -141,7 +165,8 @@ function resetClick(){
   }
   document.getElementById("picked").textcontent = "...";
   renderList();
-}
+}	}
+
 
 function formChanged() {
   var formFirst = document.getElementById("First").value
@@ -154,7 +179,8 @@ students.push(makeStudent(formUsername.toLowerCase(),formFirst,formLast,formGrad
   document.getElementById("First").value = "";
   document.getElementById("Last").value = "";
   document.getElementById("GradeLevel").value = "";
-}
+}	}
+let theTimer = setInterval(compute,1000);	
     </script>
 
   
