@@ -44,59 +44,117 @@ body {
 </head>
 
 <body translate="no" >
-  <h1>Count Down Timer</h1>
-<div id="message">...</div>
-<div id="timeRemaining">...</div>
+  <div id="container">
+ 
+</div>
+<br>
+<button id="pickStudent">Random Student</button>
+<button id="Reset" onclick="resetClick()">Reset</button>
+<div>
 
-<h2>Enter Your Date</h2>
-<form>
- Day: <input type="number" name="Day"> <br> <br>
- Month: <input type="number" name="Month"> <br><br>
- Year: <input type="number" name="Year"> <br> <br>
- <input type="button" value = "Submit" onclick=formChanged()>
+ <span id="picked">...</span>
+  <br> <br>
+   <h3>Add Student</h3>
+  <form>
+ First Name: <input type="text" id="First"> <br> <br>
+ Last Name: <input type="text" id="Last"> <br><br>
+ Grade Level: <input type="number" id="GradeLevel"> <br> <br>
+ <input type="button" value="Submit" onclick="formChanged()">
 </form>
+</div>
   
   
       <script id="rendered-js" >
 console.clear();
-console.log("hello log");
-var formDay = 1;
-var formMonth = 1;
-var formYear = 2021;
-function formChanged(){
- formDay = document.getElementsByName("Day")[0].value;
-formMonth = document.getElementsByName("Month")[0].value;
- formYear = document.getElementsByName("Year")[0].value;
-  console.log("form submitted");
+let student = 0;
+const students = [];
+
+function makeStudent(username,first,last,gradelevel){
+  const student = {};
+  student.username = username;
+  student.first = first;
+  student.last = last;
+  student.gradelevel = gradelevel;
+  student.clickcount = 0;
+  student.lasttime = Date.now();
+  return student;
+}
+
+students.push(makeStudent("roryleonard","Rory","Leonard","9"));
+students.push(makeStudent("williamgross","William","Gross","10"))
+students.push(makeStudent("henryroseman","Henry","Roseman","11"))
+
+function addStudent(firstname, lastname, username){
+  const newStudent = document.createElement("div");
+  newStudent.id = username;
 };
-function compute() {
- //don't forget to disable eventually!
- 
-  console.log(formYear);
- console.log(formMonth);
- console.log(formYear);
- const dateNow = new Date ();
- const dateThen = new Date(formYear,formMonth-1,formDay);
- const dateDiff = dateThen - dateNow;
- const dateCount = Math.floor(dateDiff/1000/60/60/24);
- const hourOffset = Math.floor(dateDiff/1000/60/60);
-  const hours = hourOffset - dateCount*24;
-  const minutes = new Date(dateDiff).getMinutes();
-  let dateString = "Time to " + formMonth + "/" + formDay + "/" + formYear + ": ";
-  dateString = dateString + dateCount + " Days, " + hours + " Hours, " + minutes + " minutes"
-document.getElementById("timeRemaining").innerHTML=dateString;
 
+function pickStudent(){
+  let studentHolder = student;
+  let randomStudentNum = Math.floor(Math.random()*students.length);
+  student = students[randomStudentNum];
+  if(studentHolder!==student){
+  document.getElementById("picked").textContent = student.first + " " + student.last + " (Username: " + student.username + ")";
+  } else {
+    pickStudent();
+  }
+};
 
+pickStudent();
 
+let element = document.getElementById("pickStudent");
 
-if(dateDiff < 0){
-  document.getElementById("message").innerHTML="Time's up";
-  clearInterval(theTimer);
+element.addEventListener("click",pickStudent);
+
+function renderList(){
+  console.log("renderList");
+  students.sort(function(a,b){return a.clickcount-b.clickcount});
+  let content = "";
   
+  for (let i = 0; i < students.length; i++) {
+    content += `<div class="student" id="${students[i].username}"> ${students[i].first} ${students[i].last} ${students[i].clickcount}</div>\n`;
+
+  }
+  
+  
+  let element = document.getElementById("container");
+  element.innerHTML = content;
 }
 
+function listClick(e){
+  console.log(e)
+  
+  for(let i=0; i<students.length; i++){
+    if(students[i].username == e.target.id){
+      students[i].clickcount++;
+    }
+  }
+  renderList();
 }
-let theTimer = setInterval(compute,1000);
+let renderclick = document.getElementById("container");
+renderclick.addEventListener("click",listClick);
+renderList();
+
+function resetClick(){
+  for(let i=0; i<students.length; i++){
+    students[i].clickcount = 0;
+  }
+  document.getElementById("picked").textcontent = "...";
+  renderList();
+}
+
+function formChanged() {
+  var formFirst = document.getElementById("First").value
+  console.log(formFirst);
+  var formLast = document.getElementById("Last").value
+  var formGradeL = document.getElementById("GradeLevel").value
+  let formUsername = formFirst + formLast
+students.push(makeStudent(formUsername.toLowerCase(),formFirst,formLast,formGradeL));
+  renderList();
+  document.getElementById("First").value = "";
+  document.getElementById("Last").value = "";
+  document.getElementById("GradeLevel").value = "";
+}
     </script>
 
   
